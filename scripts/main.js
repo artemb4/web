@@ -10,18 +10,18 @@
 
 document.querySelectorAll('.header__nav-link').forEach(link => {
     link.addEventListener('mouseover', () => {
-        link.style.color = '#ff0'; // Цвет текста при наведении
+        link.style.color = '#ff0';
     });
     link.addEventListener('mouseout', () => {
-        link.style.color = '#fff'; // Цвет текста при уходе курсора
+        link.style.color = '#fff';
     });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const currentLocation = document.location.pathname.split('/').pop(); // Получаем имя файла
+    const currentLocation = document.location.pathname.split('/').pop();
     document.querySelectorAll('.header__nav-link').forEach(link => {
         if (link.getAttribute('href') === currentLocation) {
-            link.classList.add('active'); // Добавляем активный класс
+            link.classList.add('active');
         }
     });
 });
