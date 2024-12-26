@@ -16,12 +16,3 @@ document.querySelectorAll('.header__nav-link').forEach(link => {
         link.style.color = '#fff';
     });
 });
-
-document.addEventListener('DOMContentLoaded', () => {
-    const currentLocation = document.location.pathname.split('/').pop();
-    document.querySelectorAll('.header__nav-link').forEach(link => {
-        if (link.getAttribute('href') === currentLocation) {
-            link.classList.add('active');
-        }
-    });
-});

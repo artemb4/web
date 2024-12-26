@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Получаем форму и элементы для отображения расписания
     const form = document.querySelector('#schedule-form');
 
+    // Загружаем сохраненные данные из LocalStorage при загрузке страницы
+    loadSchedules();
+
     // Добавляем обработчик события на отправку формы
     form.addEventListener('submit', (e) => {
         e.preventDefault(); // Предотвращаем стандартное поведение формы (перезагрузку страницы)
@@ -12,14 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = form.querySelector('#time').value; // Получаем время
         const service = form.querySelector('#service').value; // Получаем услугу
 
-        console.log(`Выбрана модель: ${selectedModel}`);
-        console.log(`Имя клиента: ${clientName}`);
-        console.log(`Дата: ${date}`);
-        console.log(`Время: ${time}`);
-        console.log(`Услуга: ${service}`);
-
         // Генерируем расписание для выбранной модели
         addScheduleEntry(selectedModel, clientName, date, time, service);
+
+        // Сохраняем данные в LocalStorage
+        saveSchedules();
     });
 
     // Функция добавления записи в расписание
@@ -58,8 +58,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Добавляем строку в таблицу
         scheduleBody.appendChild(row);
+    }
 
-        // Очистим форму после добавления записи
-        form.reset();
+    // Функция сохранения расписаний в LocalStorage
+    function saveSchedules() {
+        const schedules = {};
+
+        // Проходим по всем таблицам и собираем данные
+        document.querySelectorAll('.model').forEach(modelDiv => {
+            const modelId = modelDiv.id;
+            const scheduleBody = modelDiv.querySelector('.schedule-body');
+            const rows = scheduleBody.querySelectorAll('tr');
+
+            schedules[modelId] = Array.from(rows).map(row => {
+                const cells = row.querySelectorAll('td');
+                return {
+                    clientName: cells[0].textContent,
+                    date: cells[1].textContent,
+                    time: cells[2].textContent,
+                    service: cells[3].textContent
+                };
+            });
+        });
+
+        localStorage.setItem('schedules', JSON.stringify(schedules));
+    }
+
+    // Функция загрузки расписаний из LocalStorage
+    function loadSchedules() {
+        const savedSchedules = localStorage.getItem('schedules');
+        if (!savedSchedules) return;
+
+        const schedules = JSON.parse(savedSchedules);
+
+        for (const [modelId, entries] of Object.entries(schedules)) {
+            const table = document.querySelector(`#${modelId}`);
+            if (!table) continue;
+
+            const scheduleBody = table.querySelector('.schedule-body');
+            entries.forEach(entry => {
+                addScheduleEntry(modelId, entry.clientName, entry.date, entry.time, entry.service);
+            });
+        }
     }
 });

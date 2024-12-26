@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Comments</title>
+    <style>
+        /* Прелоадер */
+        .preloader {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .preloader.active {
+            display: block;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #09f;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Стили для комментариев */
+        .comments {
+            list-style: none;
+            padding: 0;
+        }
+        .comment {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comments for Photo</h1>
+    <div class="preloader active">
+        <div class="spinner"></div>
+    </div>
+    <ul class="comments"></ul>
+    <div class="error"></div>
+
+    <script src="scripts/comments.js"></script>
+</body>
+</html>
